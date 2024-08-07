@@ -280,8 +280,71 @@ Por otro lado en el codigo tambien se puede evidenciar que se saco la potencia p
             print("SNR negativo:", snrneg)  # Imprimir el SNR para el ruido sin normalizar
   ```
 ![Agregar](imagen14.png)
-SNR positivo: [7.88522954]
-gcebcoewneoie
+SNR positivo: [7.88522954], la señal deseada es más fuerte que el ruido que la acompaña.
+
 ![Agregar](imagen15.png)
-SNR negativo: [-14.6135452]
-ahshaVDASJHBASUJDQ
+SNR negativo: [-14.6135452], indica que la potencia del ruido es mayor que la potencia de la señal.
+
+<a name="ruido2"></a> 
+## Ruido Impulso
+
+Para este rudio se realizara el mismo procedimiento que en el anterior.
+```c
+# Definir función para agregar ruido de impulso y graficar
+def ruido_impulso():
+    n = np.linspace(0, 30, 500)
+    ruidoimpulso = np.abs(np.random.randn(N))
+    ruido2normalizado = (ruidoimpulso * 0.3 / 4)
+    señalsumada3 = ruido2normalizado + valoresreducido
+    snrneg2 = 10.0 * np.log10(potenciasenal / np.var(ruidoimpulso))
+    snrpos2 = 10.0 * np.log10(potenciasenal / np.var(ruido2normalizado))
+    menu = 0
+    while menu != 5:
+        print("1. Ruido sin normalizar\n2. Ruido normalizado\n3. Señal + ruido normalizado\n4. Señal + ruido sin normalizar\n5. Volver")
+        menu = int(input("Elige una opción:"))
+        if menu == 1:
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.stem(n, ruidoimpulso, linefmt='C0-', markerfmt='C0o', basefmt='C0-')
+            plt.title("Ruido de Impulso Sin Normalizar")
+            plt.xlim(0, 30)
+            plt.ylim(-4, 4)
+            plt.show()
+        if menu == 2:
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.plot(ruido2normalizado, color='cyan')
+            plt.title("Ruido de Impulso Normalizado")
+            plt.xlim(0, 500)
+            plt.ylim(-4, 4)
+            plt.show()
+        if menu == 3:
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.plot(señalsumada3, color='magenta')
+            plt.title("Señal + Ruido de Impulso Normalizado")
+            plt.xlim(0, 500)
+            plt.ylim(-4, 4)
+            plt.show()
+            print("SNR 2 positivo:", snrpos2)
+        if menu == 4:
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            señalsumada2 = ruidoimpulso + valoresreducido
+            plt.plot(señalsumada2, color='lime')
+            plt.title("Señal + Ruido de Impulso Sin Normalizar")  # Título de la gráfica
+            plt.xlim(0, 500)  # Limitar el eje x
+            plt.ylim(-4, 4)  # Limitar el eje y
+            plt.show()  # Mostrar la gráfica
+            print("SNR 2 negativo:", snrneg2)
+        if menu == 5:
+            break  # Salir del menú
+        if menu > 5 or menu < 1:
+            print("Opción inválida")  # Manejar opciones inválidas
+```
+
+
+
+
+<a name="ruido3"></a> 
+## Ruido tipo artefacto
