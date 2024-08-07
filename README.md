@@ -149,4 +149,21 @@ def valores_estadisticos():
 <a name="histograma"></a> 
 ## Histogramas
 
-1.
+1. Grafica los valores de la señal original y muestra la potencia de la señal. Debemos tner en cuenta que esta potencia la utilizaremos mas adelante.
+```c
+# Definir función para graficar la señal original
+def señal():   
+    plt.plot(valores, color='blue')  # Graficar los valores de la señal en azul
+    plt.title('Gráfica de los valores de la señal')  # Título de la gráfica
+    plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+    plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+    plt.xlim(0, 500)  # Limitar el eje x para mostrar solo las primeras 500 muestras
+    plt.ylim(-4, 4)  # Limitar el eje y para que todas las gráficas tengan la misma escala
+    plt.show()  # Mostrar la gráfica
+    print("POTENCIA SEÑAL ELEGIDA", potenciasenal)  # Imprimir la potencia de la señal
+```
+![Agregar](imagen7.png)
+2. Esta función calcula y muestra el histograma de los datos, tanto manualmente como usando funciones de Python. Para la realizacion 
+```c
+
+```
