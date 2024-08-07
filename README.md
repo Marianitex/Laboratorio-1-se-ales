@@ -60,7 +60,7 @@ Tenga en cuenta que los archivos .qrs no están auditados y contienen errores. E
 <a name="librerias"></a> 
 ## Librerias 
 
-Al ingresar a nuestro archivo en Python, lo primero que debemos realizar es la instalacion de las librerias que vamos a utilizar, este proyecto se realizo en Anaconda, esto significa que por defecto ya se tenian instaladas la mayoria. La unica libreria que se debe instalar es "wfdb" que es una biblioteca de herramientas para leer, escribir y procesar señales y anotaciones de WFDB, sin esta no seria posible utilizar la señal descargada en Physionet. Para descargarla unicamente nos dirigimos a la consola y escribimos "pip install wfdb".
+Al ingresar a nuestro archivo en Python, lo primero que debemos realizar es la instalacion de las librerias que vamos a utilizar, estos paquetes son esenciales para realizar diversas tareas como la lectura de datos, cálculos numéricos, estadísticas y visualización de datos, este proyecto se realizo en Anaconda, esto significa que por defecto ya se tenian instaladas la mayoria. La unica libreria que se debe instalar es "wfdb" que es una biblioteca de herramientas para leer, escribir y procesar señales y anotaciones de WFDB, sin esta no seria posible utilizar la señal descargada en Physionet. Para descargarla unicamente nos dirigimos a la consola y escribimos "pip install wfdb".
 
 ```c
 # Importar paquetes necesarios
@@ -99,9 +99,54 @@ Un estadístico descriptivo es una medida que resume o describe las característ
 
 Para este practica, en el momento de realizar los estadisticos de prueba se realizaron de 2 maneras, con sus respectivas formulas estadisticas, haciendo cada parte de esta por individual y con sus correspondientes funciones en python.
 
-1. Sacamos el tamaño de nuestra señal
+1. Sacamos el tamaño de nuestra señal, este sera utilizado para poder realizar los calculos de los estadisticos descriptivos.
 
-
+```c
 # Obtener el número de muestras
 tamano = signal.sig_len  # sig_len es la longitud de la señal
+```
+2. Usando las siguientes formulas relizaremos los estadisticos descriptivos de forma "Manuel" y a us vez utilizaremos las funciones para scaralos comn python.
+- Media: Es un valor central característico de un conjunto de datos estadísticos. Para calcular la media aritmética se suman todos los valores y se divide entre el número total de datos.
+- Desviacion estandar: Es un valor que indica la dispersión de un conjunto de datos estadísticos. Es igual a la raíz cuadrada de la suma de los cuadrados de las desviaciones de la serie de datos partido por el número total de observaciones.
+- Coeficiente de variacion: Es una medida estadística que sirve para determinar la dispersión de un conjunto de datos respecto a su media. Se calcula dividiendo la desviación típica de los datos entre su promedio.
+![Agregar](imagen6.png)
 
+```c
+# Definir función para calcular valores estadísticos
+def valores_estadisticos():
+    print("Tamaño del vector de la señal:", tamano)
+    print("Valores de la matriz", valores)
+
+    # MEDIA CON CÁLCULOS A MANO
+    suma_vector = sum(valores)  # Sumar todos los valores de la señal
+    media = suma_vector / tamano  # Calcular la media dividiendo por el número de muestras
+    print('Media manual:', media)
+
+    # MEDIA CON FUNCIONES DE PYTHON
+    media_python = np.mean(valores)  # Usar numpy para calcular la media
+    print('Media con python:', media_python)
+
+    # DESVIACIÓN ESTÁNDAR A MANO
+    sumatoria = 0.0  # Inicializar la sumatoria para la desviación estándar
+    for valor in valores:
+        sumatoria += (valor - media) ** 2  # Sumar el cuadrado de la diferencia de cada valor con la media
+    varianza = sumatoria / tamano  # Calcular la varianza dividiendo por el número de muestras
+    desviacion = math.sqrt(varianza)  # Calcular la desviación estándar tomando la raíz cuadrada de la varianza
+    print('Desviación estándar manual:', desviacion)
+
+    # DESVIACIÓN ESTÁNDAR CON FUNCIONES DE PYTHON
+    desviacion_python = np.std(valores, ddof=1)  # Usar numpy para calcular la desviación estándar (ddof=1 para muestras)
+    print('Desviación estándar con python:', desviacion_python)
+
+    # COEFICIENTE DE VARIACIÓN A MANO
+    coeficiente = (desviacion / media) * 100  # Calcular el coeficiente de variación como la desviación estándar dividida por la media
+    print('Coeficiente de variación manual:', coeficiente, '%')
+
+    # COEFICIENTE DE VARIACIÓN CON FUNCIONES DE PYTHON
+    coeficiente_variacion = variation(valores) * 100  # Usar scipy.stats para calcular el coeficiente de variación
+    print('Coeficiente de variación con python:', coeficiente_variacion, '%')
+```
+<a name="histograma"></a> 
+## Histogramas
+
+1.
