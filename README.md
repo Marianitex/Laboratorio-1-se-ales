@@ -150,7 +150,13 @@ def valores_estadisticos():
 ## Histogramas
 
 1. Grafica los valores de la señal original y muestra la potencia de la señal. Debemos tner en cuenta que esta potencia la utilizaremos mas adelante.
+
+![Agregar](imagen7.png)
 ```c
+# Calcular la potencia de la señal
+for a in valores:
+    sumatoriavalores += (a)**2  # Sumar el cuadrado de cada valor para obtener la potencia
+potenciasenal = sumatoriavalores / tamano  # Dividir por el número de muestras para obtener la potencia promedio
 # Definir función para graficar la señal original
 def señal():   
     plt.plot(valores, color='blue')  # Graficar los valores de la señal en azul
@@ -162,8 +168,91 @@ def señal():
     plt.show()  # Mostrar la gráfica
     print("POTENCIA SEÑAL ELEGIDA", potenciasenal)  # Imprimir la potencia de la señal
 ```
-![Agregar](imagen7.png)
-2. Esta función calcula y muestra el histograma de los datos, tanto manualmente como usando funciones de Python. Para la realizacion 
-```c
 
+2. Esta función calcula y muestra el histograma de los datos, tanto manualmente como usando funciones de Python. Para la realizacion
+
+![Agregar](imagen8.png)
+
+- Histograma Manual: SE hace dividiendo los datos en intervalos (bins) que desea usar y calculando el rango de cada uno y contabilizando la frecuencia de los datos en cada intervalo, cuántos datos caen dentro. Por otro lado tamnbien se determina el rango de los datos con valor mínimo y el valor máximo se calculae el ancho de cada intervalo dividiendo el rango de los datos por el número de intervalos y se generan los límites de los mismos, por ultimo se contabiliza la frecuencia de los datos en cada intervalo.
+```c
+   if menu ==1:
+            plt.bar(intervalos[:-1], frecuencias, width=ancho_intervalo,color='green', edgecolor='black', align='edge')  # Crear el histograma
+            plt.title('Histograma de datos - hecho a mano')  # Título de la gráfica
+            plt.xlabel('Intervalos(S)')  # Etiqueta del eje x
+            plt.ylabel('Frecuencia(Hz)')  # Etiqueta del eje y
+            plt.xticks(intervalos)  # Establecer los ticks en los intervalos
+            plt.ylim(0, max(frecuencias) + 1)  # Ajustar el límite del eje y para asegurar que todas las gráficas tengan la misma escala
+            plt.show()  # Mostrar el histograma
 ```
+- Histograma en python:
+
+La función de probabilidad, representada por la línea roja sobre el histograma, proporciona una estimación suavizada de la densidad de probabilidad de los datos. Esta línea muestra claramente un pico muy pronunciado alrededor del 0, lo cual sugiere que los valores cercanos a 0 son los más comunes en el conjunto de datos. La densidad de probabilidad disminuye de manera más gradual a medida que nos alejamos del punto central.
+
+En cuanto a la distribución, el histograma sugiere que los datos podrían seguir una distribución normal o gaussiana. La mayoría de los datos se encuentran en el rango de aproximadamente -0.5 a 0.5, lo que indica una desviación estándar pequeña. Esta concentración alrededor del valor central y la forma simétrica de la distribución apoyan la hipótesis de una distribución normal.
+
+Sin embargo, se observa un ligero sesgo positivo en la distribución. Aunque la mayoría de los datos se concentran en 0, hay una pequeña cola extendiéndose hacia la derecha, lo que indica la presencia de valores atípicos significativamente mayores que el resto de los datos. Esta asimetría en la distribución señala que los datos no son perfectamente simétricos.
+
+![Agregar](image9.png)
+```c
+ if menu ==2:
+            ax = sns.distplot(valoresreducido,
+                  kde = True,            
+                  bins=numero_intervalos,
+                  color='red',
+                  hist_kws={"linewidth": 200,'alpha':1})
+            ax.set(xlabel='Normal Distribution', ylabel='Frequency')
+            plt.title('Histograma de datos con plt.hist')
+            plt.xlabel('Intervalos(S)')
+            plt.ylabel('Frecuencia(Hz)')
+            plt.grid(axis='y', alpha=0.75)
+            plt.show()
+```
+
+<a name="ruido1"></a> 
+## Ruido Gaussiano
+1. Contaminación con ruido gaussiano
+```c
+# Contaminación con ruido gaussiano
+N = 500  # Número de muestras a simular, se puede elegir cualquier número
+sumatoriavalores = 0.0  # Inicializar la sumatoria de los valores de la señal
+```
+2. Definir función para agregar ruido gaussiano normal y normalizado.
+```c
+# Definir función para agregar ruido gaussiano y graficar
+def ruido_gaussiano():
+    ruidogaussiano = np.random.randn(N)  # Generar ruido gaussiano (distribución normal estándar)
+    ruido1normalizado = ((ruidogaussiano * 0.3) / 4)  # Normalizar el ruido
+    snrneg = 10.0 * np.log10(potenciasenal / np.var(ruidogaussiano))  # Calcular el SNR para el ruido sin normalizar
+    snrpos = 10.0 * np.log10(potenciasenal / np.var(ruido1normalizado))  # Calcular el SNR para el ruido normalizado
+
+    menu = 0
+    while menu != 5:
+        # Mostrar el menú de opciones
+        print("1. Ruido sin normalizar\n2. Ruido normalizado\n3. Señal + ruido normalizado\n4. Señal + ruido sin normalizar\n5. Volver")
+        menu = int(input("Elige una opción:"))
+        if menu == 1:
+            plt.plot(ruidogaussiano, color='red')  # Graficar ruido gaussiano sin normalizar
+            plt.title("Ruido Gaussiano Sin Normalizar")  # Título de la gráfica
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.xlim(0, 500)  # Limitar el eje x
+            plt.ylim(-4, 4)  # Limitar el eje y
+            plt.show()  # Mostrar la gráfica
+        if menu == 2:
+            plt.plot(ruido1normalizado, color='orange')  # Graficar ruido gaussiano normalizado
+            plt.title("Ruido Gaussiano Normalizado")  # Título de la gráfica
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.xlim(0, 500)  # Limitar el eje x
+            plt.ylim(-4, 4)  # Limitar el eje y
+            plt.show()  # Mostrar la gráfica
+```
+![Agregar](imagen10.png)
+![Agregar](imagen11.png)
+
+Por otro lado en el codigo tambien se puede evidenciar que se saco la potencia para el ruido y el SNR. RECORDAR QUE ESTE PROCESO SE REALIZARA PARA CADA UNO DE LOS RUIDOS.
+
+- Potencia:
+![Agregar](imagen12.png)
+-SNR:
+![Agregar](imagen13.png)
