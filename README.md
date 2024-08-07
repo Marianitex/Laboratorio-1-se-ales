@@ -35,5 +35,11 @@ Los estadísticos que se espera obtener son:
 - Contaminar la señal con ruido impulso y medir el SNR 
 - Contaminar la señal con ruido tipo artefacto y medir el SNR
 
-
-
+<a name="Señal"></a> 
+## Señal en Physionet
+1. Buscar Physionet desde su navegador preferido y seleccionar el boton "DATA".
+![Agregar](imagen1.png)
+2. Al ingresar en "DATA" van a aparecer todos los archivos de señales que la pagina tiene en su repositorio, para este proyecto el seleccionado fue "Apnea-ECG Database: Seventy ECG signals with expert-labelled apnea annotations and machine-generated QRS annotations".
+![Agregar](imagen2.png)
+2. Al ingresar a la señal seleccionada podremos evidenciar toda la informacion que nos comunica sobre que se trata la misma.
+![Agregar](imagen3.png)
