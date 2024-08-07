@@ -254,5 +254,34 @@ Por otro lado en el codigo tambien se puede evidenciar que se saco la potencia p
 
 - Potencia:
 ![Agregar](imagen12.png)
--SNR:
+- SNR:
 ![Agregar](imagen13.png)
+3. Graficar ruido + señal normalizado y sacar los valores del SNR.
+  ```c
+  if menu == 3:
+            senal_ruido1normal = valoresreducido + ruido1normalizado  # Sumar la señal original con el ruido normalizado
+            plt.plot(senal_ruido1normal, color='purple')  # Graficar la señal con ruido normalizado
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.title("Señal + Ruido Gaussiano Normalizado")  # Título de la gráfica
+            plt.xlim(0, 500)  # Limitar el eje x
+            plt.ylim(-4, 4)  # Limitar el eje y
+            plt.show()  # Mostrar la gráfica
+            print("SNR positivo:", snrpos)  # Imprimir el SNR para el ruido normalizado
+        if menu == 4:
+            senal_ruidogauss = valoresreducido + ruidogaussiano  # Sumar la señal original con el ruido sin normalizar
+            plt.plot(senal_ruidogauss, color='brown')  # Graficar la señal con ruido sin normalizar
+            plt.xlabel('Muestras(ms)')  # Etiqueta del eje x
+            plt.ylabel('Amplitud(mV)')  # Etiqueta del eje y
+            plt.title("Señal + Ruido Gaussiano Sin Normalizar")  # Título de la gráfica
+            plt.xlim(0, 500)  # Limitar el eje x
+            plt.ylim(-4, 4)  # Limitar el eje y
+            plt.show()  # Mostrar la gráfica
+            print("SNR negativo:", snrneg)  # Imprimir el SNR para el ruido sin normalizar
+  ```
+![Agregar](imagen14.png)
+SNR positivo: [7.88522954]
+gcebcoewneoie
+![Agregar](imagen15.png)
+SNR negativo: [-14.6135452]
+ahshaVDASJHBASUJDQ
