@@ -6,6 +6,8 @@ Agosto 2024
 ## Tabla de contenidos
 * [¿Qué se va a realizar?](#introduccion)
 * [Señal en Physionet](#señal)
+* [Librerias](#librerias)
+* [¿Como colocar la señal en python?](#señal2)
 * [Estadisticos descriptivos](#estadisticos)
 * [Histogramas](#histograma)
 * [Ruido Gaussiano](#ruido1)
@@ -42,7 +44,6 @@ Los estadísticos que se espera obtener son:
 2. Al ingresar en "DATA" van a aparecer todos los archivos de señales que la pagina tiene en su repositorio, para este proyecto el seleccionado fue "Apnea-ECG Database: Seventy ECG signals with expert-labelled apnea annotations and machine-generated QRS annotations".
 ![Agregar](imagen2.png)
 3. Al ingresar a la señal seleccionada podremos evidenciar toda la informacion que nos comunica sobre que se trata la misma.
-![Agregar](imagen3.png)
 - Descripción de los datos:
 
 Los datos constan de 70 registros, divididos en un conjunto de aprendizaje de 35 registros (a01 a a20, b01 a b05 y c01 a c10) y un conjunto de prueba de 35 registros (x01 a x35), todos los cuales pueden descargarse desde esta página. La duración de los registros varía desde un poco menos de 7 horas hasta casi 10 horas cada uno. Cada registro incluye una señal de ECG digitalizada continua, un conjunto de anotaciones de apnea (derivadas por expertos humanos sobre la base de la respiración registrada simultáneamente y las señales relacionadas) y un conjunto de anotaciones de QRS generadas por máquina (en las que todos los latidos, independientemente del tipo, se han etiquetado como normales). Además, ocho registros (a01 a a04, b01 y c01 a c03) están acompañados por cuatro señales adicionales (Resp C y Resp A, señales de esfuerzo respiratorio torácico y abdominal obtenidas mediante pletismografía de inductancia; Resp N, flujo de aire oronasal medido mediante termistores nasales; y SpO2, saturación de oxígeno).
@@ -50,8 +51,57 @@ Los datos constan de 70 registros, divididos en un conjunto de aprendizaje de 35
 Se asocian varios archivos con cada registro. Los archivos con nombres de la forma rnn.dat contienen los ECG digitalizados (16 bits por muestra, el byte menos significativo primero en cada par, 100 muestras por segundo, nominalmente 200 unidades A/D por milivoltio). Los archivos .hea son archivos de encabezado (de texto) que especifican los nombres y formatos de los archivos de señal asociados; estos archivos de encabezado son necesarios para el software disponible en este sitio. Los archivos .apn son archivos de anotación (binarios), que contienen una anotación para cada minuto de cada registro que indica la presencia o ausencia de apnea en ese momento; Estos archivos están disponibles únicamente para las 35 grabaciones del conjunto de aprendizaje. Los archivos qrs son archivos de anotación generados por máquina (binarios), realizados con sqrs125, y proporcionados para la conveniencia de aquellos que no desean utilizar sus propios detectores QRS.
 
 Tenga en cuenta que los archivos .qrs no están auditados y contienen errores. Es posible que desee corregir estos errores. De lo contrario, puede utilizar estas anotaciones en forma no corregida si desea investigar métodos de detección de apnea que sean robustos con respecto a pequeñas cantidades de errores de detección de QRS, o puede ignorar estas anotaciones por completo y trabajar directamente a partir de los archivos de señal. Puede encontrar más información sobre los archivos de anotación, incluidas las interpretaciones de los tipos de anotación (códigos) y los detalles de cómo se crearon los archivos .qrs, aquí.
+![Agregar](imagen3.png)
 4. Al deslizar hacia abajo en la pagiam podremos encontrar "FILES", alli es donde realizaraemos la descarga de nuestros archivos .hea y .dat, en este caso los que utilizamos son a18.hea y a18.dat.
 ![Agregar](imagen4.png)
 5. Despues de tener descargados los archivos de nuestra señal recuerde que es necesario que estos sean guardados en la misma carpeta en que se guarde nuestro proyecto en python.
 ![Agregar](imagen5.png)
-![Agregar](imagen4.png)
+
+<a name="librerias"></a> 
+## Librerias 
+
+Al ingresar a nuestro archivo en Python, lo primero que debemos realizar es la instalacion de las librerias que vamos a utilizar, este proyecto se realizo en Anaconda, esto significa que por defecto ya se tenian instaladas la mayoria. La unica libreria que se debe instalar es "wfdb" que es una biblioteca de herramientas para leer, escribir y procesar señales y anotaciones de WFDB, sin esta no seria posible utilizar la señal descargada en Physionet. Para descargarla unicamente nos dirigimos a la consola y escribimos "pip install wfdb".
+
+```c
+# Importar paquetes necesarios
+import wfdb  # Para leer "records" de PhysioNet
+import matplotlib.pyplot as plt  # Para graficar los datos
+import numpy as np  # Para cálculos numéricos
+import math  # Para cálculos matemáticos
+from scipy.stats import variation  # Para calcular el coeficiente de variación
+import seaborn as sns
+```
+
+<a name="señal2"></a> 
+## ¿Como colocar la señal en pyhton?
+
+Se utiliza la libreria wfdb para poder acoplar el archivo de datos de la señal y convertirlos en un vector, de esta manera que puedan ser utilizados para cada uno de los parametros a realizarse en la practica.
+
+```c
+# Cargar la información desde los archivos .dat y .hea
+# Esto carga un record de ECG de PhysioNet con las señales asociadas
+signal = wfdb.rdrecord('a18')
+
+# Obtener los valores de la señal
+valores = signal.p_signal  # p_signal es un array numpy con las señales
+valoresreducido = valores.flatten()[:500]  # Reducir a las primeras 500 muestras para algunas gráficas
+valoresreducido2 = valores.flatten()[:100]  # Reducir aún más para otras gráficas
+
+# Obtener el número de muestras
+tamano = signal.sig_len  # sig_len es la longitud de la señal
+
+```
+
+<a name="estadisticos"></a> 
+## Estadisticos Descriptivos 
+
+Un estadístico descriptivo es una medida que resume o describe las características de un conjunto de datos. Ejemplos comunes incluyen la media, la mediana, la moda, la desviación estándar y el rango. Estas estadísticas ayudan a entender la distribución y la variabilidad de los datos sin hacer inferencias más amplias.
+
+Para este practica, en el momento de realizar los estadisticos de prueba se realizaron de 2 maneras, con sus respectivas formulas estadisticas, haciendo cada parte de esta por individual y con sus correspondientes funciones en python.
+
+1. Sacamos el tamaño de nuestra señal
+
+
+# Obtener el número de muestras
+tamano = signal.sig_len  # sig_len es la longitud de la señal
+
