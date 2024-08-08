@@ -342,9 +342,16 @@ def ruido_impulso():
         if menu > 5 or menu < 1:
             print("Opción inválida")  # Manejar opciones inválidas
 ```
-
-
-
+- Ruido normal:
+![Agregar](imagen16.png)
+- Ruido normalizado:
+![Agregar](imagen17.png)
+- Ruido normalizado+señal:
+![Agregar](imagen18.png)
+SNR 2 positivo: [12.14414016], la señal deseada es más fuerte que el ruido que la acompaña.
+- Ruido sin normalizado+señal:
+![Agregar](imagen19.png)
+SNR 2 negativo: [-10.35463457], indica que la potencia del ruido es mayor que la potencia de la señal.
 
 <a name="ruido3"></a> 
 ## Ruido tipo artefacto
