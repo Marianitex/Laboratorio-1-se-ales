@@ -355,3 +355,53 @@ SNR 2 negativo: [-10.35463457], indica que la potencia del ruido es mayor que la
 
 <a name="ruido3"></a> 
 ## Ruido tipo artefacto
+
+Para este rudio se realizara el mismo procedimiento que en el anterior.
+```c
+def ruido_artefacto():
+    print("¿Qué tipo de señal deseas ver?")
+    
+    # Generar ruido tipo artefacto
+    num_artefactos = 100  # Número de artefactos a añadir
+    amplitud_artefacto = 0.5  # Amplitud fija para cada artefacto
+    indices_artefactos = np.random.randint(0, len(valoresreducido2), num_artefactos)  # Posiciones aleatorias de los artefactos
+    artefactos = np.zeros_like(valoresreducido2)  # Crear un vector de ceros con la misma longitud que valoresreducido2
+    artefactos[indices_artefactos] = amplitud_artefacto  # Colocar artefactos con la amplitud especificada en las posiciones aleatorias
+
+    # Sumar la señal de artefactos a la señal original
+    suma3 = valoresreducido2 + artefactos
+
+    # Calcular la potencia del ruido tipo artefacto
+    sumatoriaarte = 0.0
+    for i in artefactos:    
+        sumatoriaarte += (i)**2
+    potenciaartefacto = sumatoriaarte / num_artefactos
+
+    # Normalizar la señal de artefactos
+    ruido3normalizado = (artefactos * 0.3) / 4
+    sumatoriaarte2 = 0.0
+    for i in ruido3normalizado:    
+        sumatoriaarte2 += (i)**2
+    potenciaartefactonormalizado = sumatoriaarte2 / num_artefactos
+
+    # Sumar la señal original con la señal de artefactos normalizada
+    señalsumada4 = ruido3normalizado + valoresreducido2
+
+    # Calcular la relación señal-ruido (SNR)
+    snrneg3 = 10.0 * np.log10(potenciasenal / potenciaartefacto)
+    snrpos3 = 10.0 * np.log10(potenciasenal / potenciaartefactonormalizado)
+```
+- Ruido normal:
+![Agregar](imagen20.png)
+- Ruido normalizado:
+![Agregar](imagen21.png)
+- Ruido normalizado+señal:
+![Agregar](imagen22.png)
+SNR positivo: [15.43804121], la señal deseada es más fuerte que el ruido que la acompaña.
+- Ruido sin normalizado+señal:
+![Agregar](imagen23.png)
+SNR negativo: [-7.06073352], indica que la potencia del ruido es mayor que la potencia de la señal.
+
+<a name="contacto"></a> 
+## Contacto
+* Creado por [Marianitex](https://github.com/Marianitex) - sígueme en mis redes sociales como @_mariana.higuera
