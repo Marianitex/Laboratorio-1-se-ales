@@ -253,7 +253,7 @@ def ruido_gaussiano():
 Por otro lado en el codigo tambien se puede evidenciar que se saco la potencia para el ruido y el SNR. RECORDAR QUE ESTE PROCESO SE REALIZARA PARA CADA UNO DE LOS RUIDOS.
 
 - Potencia:
-![Agregar](imagen12.png)
+![Agregar](imagen30.png)
 - SNR:
 ![Agregar](imagen13.png)
 3. Graficar ruido + señal normalizado y sacar los valores del SNR.
